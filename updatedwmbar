@@ -1,0 +1,15 @@
+#!/bin/sh
+
+MEMORY="Mem "$(free --mega | awk '/^Mem: / {if ($3 > 1000) printf "%.1fG/%.1fG %.0f%%\n", $3/1000, $2/1000, $3/$2*100; 
+                                            else printf "%dM/%.1fG %.0f%%\n", $3, $2/1000, $3/$2*100}')
+VOLUME="Vol "$(pactl list sinks | grep '^[[:space:]]Volume:' | \head -n $(( $SINK + 1 )) | tail -n 1 | sed -e 's,.* \([0-9][0-9]*\)%.*,\1,')"%"
+TIME=$(date +%H:%M)
+LANG=$(language)
+
+if acpi -a | grep off-line > /dev/null
+then
+	BAT="Bat $(acpi -b | awk '{ print $4 " " $5 }' | tr -d ',')"
+	xsetroot -name "$LANG [$MEMORY] [$BAT] [$VOLUME] $TIME"
+else
+	xsetroot -name "$LANG [$MEMORY] [$VOLUME] $TIME"
+fi

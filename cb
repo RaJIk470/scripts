@@ -1,0 +1,12 @@
+#!/bin/sh
+
+# this script lists all books in certain directory. Accepted formats listen in formats variable
+# script depends on dmenu
+books_directory="$1"
+formats=".pdf\|.djvu"
+# if $EDITOR is not present the zathura will be set by default
+editor=$([ -z "$READER" ] && echo "zathura" || echo "$READER")
+# this ls command I should replace with find
+books=$(ls --recursive "$books_directory" | awk "NF" | grep "$formats")
+book=$(echo "$books" | dmenu -l 20 | awk '{print $0}')
+[ "$book" != '' ] && $editor "$(find "$books_directory" -name "$book")"

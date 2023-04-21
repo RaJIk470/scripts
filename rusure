@@ -1,0 +1,6 @@
+#!/bin/sh
+
+# simple dmenu script that other programs will use.
+# It just shows "Are you sure" propmt
+
+printf "no\nyes" | dmenu -p "Are you sure?"

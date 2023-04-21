@@ -1,0 +1,6 @@
+#!/bin/sh
+
+# checks language on my system either it's us or ru and echoes it
+lang=$(xset -q | grep LED | awk '{print $10}')
+[ "$lang" = "00000000" ] && echo "us" 
+[ "$lang" = "00001000" ] && echo "ru"
